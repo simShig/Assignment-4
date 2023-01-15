@@ -2,7 +2,7 @@ from persistence import *
 
 import sys
 
-def main(args : list[str]):
+def main(args : list):
     inputfilename : str = args[1]
     with open(inputfilename) as inputfile:
         for line in inputfile:
