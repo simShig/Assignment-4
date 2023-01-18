@@ -26,6 +26,7 @@ def main(args : list):
             current_q = cursor.fetchone()[1]
             print (current_q - quantity)
             if quantity>0:      #supplier supplied more products
+                print("supply attempt, updating products and activities")
                 #update products table (quantity)
                 cmd = """
                 UPDATE products SET quantity = quantity + {} WHERE id = {}
@@ -35,51 +36,21 @@ def main(args : list):
                 #update activities table
                 cmd = "INSERT INTO activities (product_id, quantity, activator_id, date) VALUES ({},{},{},{})".format(product_id,quantity,activator_id,date)
                 repo._conn.execute(cmd)
-            else:
-                if current_q<quantity:
-                    print ("smaller")
+            else:   #attempt to SELL
+                if current_q<quantity:      #cant sell, not enough quantity
+                    print ("cant SELL, not enough quantity")
                     #DO NOTHING!
-                else:
-                    print ("bigger")
-                    
-                    
-                    #update products quantity
-
-                    
-                    #add to activities table
-
-
-
-    #     action = action.strip() # remove leading and trailing whitespace
-    #     action_parts = action.split(' ') # split the action into parts
-    #     if action_parts[0] == 'buy':
-    #         # Handle buying products
-    #         product_id = int(action_parts[1])
-    #         quantity = int(action_parts[2])
-    #         c.execute("UPDATE products SET quantity = quantity + ? WHERE id = ?", (quantity, product_id))
-    #     elif action_parts[0] == 'sell':
-    #         # Handle selling products
-    #         product_id = int(action_parts[1])
-    #         quantity = int(action_parts[2])
-    #         c.execute("SELECT quantity FROM products WHERE id = ?", (product_id,))
-    #         current_quantity = c.fetchone()[0]
-    #         if current_quantity >= quantity:
-    #             c.execute("UPDATE products SET quantity = quantity - ? WHERE id = ?", (quantity, product_id))
-    #             c.execute("INSERT INTO activities (product_id, quantity) VALUES (?, ?)", (product_id, -quantity))
-    #     else:
-    #         # Handle invalid actions
-    #         print(f'Invalid action: {action}')
-    # conn.commit()
-    # conn.close()
-
-            # print (cmd)
-            # print(repo.execute_command(cmd))
-            
-            
-            
-
-            # cmd = "INSERT INTO employees (id, name, salary, branche) VALUES ({},{},{},{})".format(splittedline[0],"'"+splittedline[1]+"'","'"+splittedline[2]+"'","'"+splittedline[3]+"'")
-
+                else:                          #selling proccess
+                    print ("SELLING YEYYY!!!!") 
+                    #update products table (quantity)
+                    cmd = """
+                    UPDATE products SET quantity = quantity + {} WHERE id = {}
+                    """.format(quantity,product_id)
+                    cursor.execute(cmd)
+                    repo._conn.commit
+                    #update activities table
+                    cmd = "INSERT INTO activities (product_id, quantity, activator_id, date) VALUES ({},{},{},{})".format(product_id,quantity,activator_id,date)
+                    repo._conn.execute(cmd)
 
 
 if __name__ == '__main__':

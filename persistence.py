@@ -54,7 +54,7 @@ class Activitie(object):
 class Repository(object):
     def __init__(self):
         self._conn = sqlite3.connect('bgumart.db')
-        self._conn.text_factory = bytes
+        # self._conn.text_factory = bytes
         # tTODO: complete
         self.employee = Dao(Employee,self._conn)
         self.supplier = Dao(Supplier,self._conn)
