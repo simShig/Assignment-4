@@ -63,7 +63,7 @@ def print_activities ():
 def print_employees_report ():
     print("Employees report")
     cursor = repo._conn.cursor()
-    cmd = """SELECT employees.name, employees.salary, employees.branche, SUM(products.price*activities.quantity) as total_sales_income
+    cmd = """SELECT employees.name, employees.salary, employees.branche, SUM(products.price*-activities.quantity) as total_sales_income
     FROM employees JOIN activities ON employees.id=activities.activator_id
     JOIN products ON activities.product_id=products.id
     GROUP BY employees.id ORDER BY total_sales_income DESC"""
