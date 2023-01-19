@@ -75,7 +75,9 @@ def print_employees_report ():
     # cursor.execute("UPDATE this SET total_sales_income=0 WHERE total_sales_income ISNULL ")
     rows = cursor.fetchall()
     for row in rows:
-        print(row)
+        # print(row[0] +" "+str(row[1])+" "+row[2])
+        print(*row)
+
     cursor.close
     # cmd = """SELECT employees.name, employees.salary, employees.branche, SUM(products.price*-activities.quantity) as total_sales_income
     # FROM employees JOIN activities ON employees.id=activities.activator_id
