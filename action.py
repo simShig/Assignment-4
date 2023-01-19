@@ -22,11 +22,10 @@ def main(args : list):
             # print (product_id + ","+quantity +", "+activator_id+", "+date)
             cmd1= """SELECT id,quantity FROM products WHERE products.id={}""".format(product_id)
             cursor = repo._conn.cursor().execute(cmd1)
-            print(cursor)
             current_q = cursor.fetchone()[1]
-            print (current_q - quantity)
+            # print (current_q - quantity)
             if quantity>0:      #supplier supplied more products
-                print("supply attempt, updating products and activities")
+                # print("supply attempt, updating products and activities")
                 #update products table (quantity)
                 cmd = """
                 UPDATE products SET quantity = quantity + {} WHERE id = {}
@@ -38,10 +37,11 @@ def main(args : list):
                 repo._conn.execute(cmd)
             else:   #attempt to SELL
                 if current_q<quantity:      #cant sell, not enough quantity
-                    print ("cant SELL, not enough quantity")
+                    # print ("cant SELL, not enough quantity")
                     #DO NOTHING!
+                    continue
                 else:                          #selling proccess
-                    print ("SELLING YEYYY!!!!") 
+                    # print ("SELLING YEYYY!!!!") 
                     #update products table (quantity)
                     cmd = """
                     UPDATE products SET quantity = quantity + {} WHERE id = {}

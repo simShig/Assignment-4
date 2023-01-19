@@ -61,18 +61,25 @@ def print_activities ():
    
     # Employees report:  Name(asc),salary,workingLocation,total sales income
 def print_employees_report ():
+    print()
     print("Employees report")
     cursor = repo._conn.cursor()
-    cmd = """SELECT employees.name, employees.salary, employees.branche, SUM(products.price*-activities.quantity) as total_sales_income
-    FROM employees JOIN activities ON employees.id=activities.activator_id
-    JOIN products ON activities.product_id=products.id
-    GROUP BY employees.id ORDER BY total_sales_income DESC"""
+    cmd = """SELECT employees.name, employees.salary, branches.location, SUM(products.price*-activities.quantity) as total_sales_income
+    FROM employees LEFT JOIN activities ON employees.id=activities.activator_id
+    LEFT JOIN products ON activities.product_id=products.id
+    LEFT JOIN branches ON employees.branche = branches.id
+    GROUP BY employees.id ORDER BY name ASC"""
     cursor.execute(cmd)
     rows = cursor.fetchall()
     for row in rows:
         print(row)
     cursor.close
-   
+    # cmd = """SELECT employees.name, employees.salary, employees.branche, SUM(products.price*-activities.quantity) as total_sales_income
+    # FROM employees JOIN activities ON employees.id=activities.activator_id
+    # JOIN products ON activities.product_id=products.id
+    # GROUP BY employees.id ORDER BY total_sales_income DESC"""
+
+
     # Activity report: date,item description, quantity, name of seller, name of supplier
     # if SALE -> supplier=NONE, if supplying ->seller=NONE
     # print by date descending
@@ -83,6 +90,7 @@ def print_employees_report ():
              
    
 def print_activity_report ():
+    print()
     print("Activity report")
     cursor = repo._conn.cursor()
     cmd = """
