@@ -64,12 +64,15 @@ def print_employees_report ():
     print()
     print("Employees report")
     cursor = repo._conn.cursor()
-    cmd = """SELECT employees.name, employees.salary, branches.location, SUM(products.price*-activities.quantity) as total_sales_income
+    cmd = """SELECT employees.name, employees.salary, branches.location, IFNULL(SUM(products.price*-activities.quantity),0) as total_sales_income
     FROM employees LEFT JOIN activities ON employees.id=activities.activator_id
     LEFT JOIN products ON activities.product_id=products.id
     LEFT JOIN branches ON employees.branche = branches.id
-    GROUP BY employees.id ORDER BY name ASC"""
+    GROUP BY employees.id ORDER BY name ASC
+    """
     cursor.execute(cmd)
+
+    # cursor.execute("UPDATE this SET total_sales_income=0 WHERE total_sales_income ISNULL ")
     rows = cursor.fetchall()
     for row in rows:
         print(row)
