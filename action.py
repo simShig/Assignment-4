@@ -23,7 +23,7 @@ def main(args : list):
             cmd1= """SELECT id,quantity FROM products WHERE products.id={}""".format(product_id)
             cursor = repo._conn.cursor().execute(cmd1)
             current_q = cursor.fetchone()[1]
-            # print (current_q - quantity)
+            # print ("exsists:" + str(current_q) + " actions:" +str(quantity))   #for debug
             if quantity>0:      #supplier supplied more products
                 # print("supply attempt, updating products and activities")
                 #update products table (quantity)
@@ -36,7 +36,7 @@ def main(args : list):
                 cmd = "INSERT INTO activities (product_id, quantity, activator_id, date) VALUES ({},{},{},{})".format(product_id,quantity,activator_id,date)
                 repo._conn.execute(cmd)
             else:   #attempt to SELL
-                if current_q<quantity:      #cant sell, not enough quantity
+                if current_q+quantity<0:      #cant sell, not enough quantity
                     # print ("cant SELL, not enough quantity")
                     #DO NOTHING!
                     continue
