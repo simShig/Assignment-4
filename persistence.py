@@ -47,7 +47,6 @@ class Activitie(object):
         self.date = date
     # pass
  
-# Data Access Objects (DAOs) were not written here, think weather needed
 
 
 #Repository
